@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { get } from '@vercel/edge-config';
+import { edgeConfig } from '@/lib/edge-config';
 
 export const config = {
   matcher: [
@@ -23,9 +23,10 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const liveTime = await get<string>('liveTime');
-    const indefiniteMaintenance = await get<boolean>('indefiniteMaintenance');
-    
+    const liveTime = await edgeConfig.get<string>('liveTime');
+    const indefiniteMaintenance = await edgeConfig.get<boolean>('indefiniteMaintenance');
+    console.log("liveTime", liveTime);
+    console.log("indefiniteMaintenance", indefiniteMaintenance);
     // If indefinite maintenance is enabled, redirect to maintenance page
     if (indefiniteMaintenance) {
       return NextResponse.redirect(new URL('/maintenance', request.url));
