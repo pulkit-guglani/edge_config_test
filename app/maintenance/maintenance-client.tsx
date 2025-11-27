@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface MaintenanceClientProps {
   liveTime: string | null;
   indefiniteMaintenance: boolean;
 }
 
-export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: MaintenanceClientProps) {
+export default function MaintenanceClient({
+  liveTime,
+  indefiniteMaintenance,
+}: MaintenanceClientProps) {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -20,7 +23,7 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
     if (liveTime) {
       const targetTime = new Date(liveTime).getTime();
       const now = new Date().getTime();
-      
+
       if (targetTime > now) {
         // Start countdown timer
         const updateTimer = () => {
@@ -30,7 +33,9 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
           if (distance > 0) {
             setTimeLeft({
               days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-              hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+              hours: Math.floor(
+                (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+              ),
               minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
               seconds: Math.floor((distance % (1000 * 60)) / 1000),
             });
@@ -58,8 +63,8 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400">
             {indefiniteMaintenance || !liveTime
-              ? 'We&apos;re currently performing scheduled maintenance. Please check back later.'
-              : 'We&apos;re performing scheduled maintenance and will be back online shortly.'}
+              ? "We&apos;re currently performing scheduled maintenance. Please check back later."
+              : "We&apos;re performing scheduled maintenance and will be back online shortly."}
           </p>
         </div>
 
@@ -74,7 +79,7 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
                   {timeLeft.days}
                 </div>
                 <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                  {timeLeft.days === 1 ? 'Day' : 'Days'}
+                  {timeLeft.days === 1 ? "Day" : "Days"}
                 </div>
               </div>
               <div className="rounded-lg bg-white p-6 shadow-md dark:bg-zinc-900">
@@ -82,7 +87,7 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
                   {timeLeft.hours}
                 </div>
                 <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                  {timeLeft.hours === 1 ? 'Hour' : 'Hours'}
+                  {timeLeft.hours === 1 ? "Hour" : "Hours"}
                 </div>
               </div>
               <div className="rounded-lg bg-white p-6 shadow-md dark:bg-zinc-900">
@@ -90,7 +95,7 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
                   {timeLeft.minutes}
                 </div>
                 <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                  {timeLeft.minutes === 1 ? 'Minute' : 'Minutes'}
+                  {timeLeft.minutes === 1 ? "Minute" : "Minutes"}
                 </div>
               </div>
               <div className="rounded-lg bg-white p-6 shadow-md dark:bg-zinc-900">
@@ -98,14 +103,14 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
                   {timeLeft.seconds}
                 </div>
                 <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                  {timeLeft.seconds === 1 ? 'Second' : 'Seconds'}
+                  {timeLeft.seconds === 1 ? "Second" : "Seconds"}
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {indefiniteMaintenance && (
+        {!timeLeft && indefiniteMaintenance && (
           <div className="mt-8 rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
             <p className="text-sm text-yellow-800 dark:text-yellow-200">
               Maintenance is ongoing. No estimated completion time available.
@@ -116,4 +121,3 @@ export default function MaintenanceClient({ liveTime, indefiniteMaintenance }: M
     </div>
   );
 }
-
